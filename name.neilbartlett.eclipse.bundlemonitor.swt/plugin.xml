@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="name.neilbartlett.eclipse.bundlemonitor.swt.viewContribution1"
+            targetID="name.neilbartlett.eclipse.bundlemonitor.bundlesView">
+         <action
+               class="name.neilbartlett.eclipse.bundlemonitor.swt.InstallFromFileActionDelegate"
+               enablesFor="*"
+               icon="icons/addfile.gif"
+               id="name.neilbartlett.eclipse.bundlemonitor.installBundleAction"
+               label="Install"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Install from File">
+         </action>
+      </viewContribution>
+   </extension>
+
+</plugin>

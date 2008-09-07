@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BundleMonitor SWT Bundle
+Bundle-SymbolicName: name.neilbartlett.eclipse.bundlemonitor.swt;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Vendor: Neil Bartlett
+Import-Package: org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.jface.action,
+ org.eclipse.jface.dialogs,
+ org.eclipse.jface.viewers,
+ org.eclipse.jface.window,
+ org.eclipse.swt,
+ org.eclipse.swt.widgets;bundle-symbolic-name="org.eclipse.swt",
+ org.eclipse.ui,
+ org.eclipse.ui.plugin,
+ org.osgi.framework;version="1.4.0"
+Eclipse-LazyStart: true
+Bundle-Activator: name.neilbartlett.eclipse.bundlemonitor.swt.Activator
