@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/name.neilbartlett.eclipse.bundlemonitor.feature_0.0.3.200803061046.jar" id="name.neilbartlett.eclipse.bundlemonitor.feature" version="0.0.3.200803061046">
+      <category name="bundlemonitor"/>
+   </feature>
+   <category-def name="bundlemonitor" label="Bundle Monitor"/>
+</site>

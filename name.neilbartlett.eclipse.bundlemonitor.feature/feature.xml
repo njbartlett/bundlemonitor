@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="name.neilbartlett.eclipse.bundlemonitor.feature"
+      label="Bundle Monitor Feature"
+      version="0.0.3.qualifier"
+      provider-name="Neil Bartlett">
+
+   <description>
+      Manage OSGi runtime bundles and services
+   </description>
+
+   <copyright>
+      Copyright (c) 2008 Neil Bartlett
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Copyright (c) 2008 Neil Bartlett
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0 which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <plugin
+         id="name.neilbartlett.eclipse.bundlemonitor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="name.neilbartlett.eclipse.bundlemonitor.swt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
