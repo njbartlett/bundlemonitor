@@ -14,27 +14,20 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.Bundle;
 
-public class BundlesView extends ViewPart {
+public class BundlesView extends FilteredViewPart {
 
 	private TableViewer tableViewer;
 	private BundlesContentProvider contentProvider;
@@ -42,19 +35,10 @@ public class BundlesView extends ViewPart {
 	private IAction propertiesAction;
 	private BundleSymbolicNameFilter nameFilter;
 
-	public void createPartControl(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2,false));
-		
-		new Label(composite, SWT.NONE).setText("Filter:");
-		final Text txtFilter = new Text(composite, SWT.BORDER);
-		txtFilter.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		
-		Table table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
-				| SWT.MULTI);
+	public void createMainControl(Composite parent) {
+		Table table = new Table(parent, SWT.FULL_SELECTION | SWT.MULTI);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		TableColumn col = new TableColumn(table, SWT.BORDER);
 		col.setWidth(40);
@@ -73,22 +57,20 @@ public class BundlesView extends ViewPart {
 		col.setText("Location");
 
 		tableViewer = new TableViewer(table);
-		contentProvider = new BundlesContentProvider(tableViewer, Activator
-				.getDefault().getBundleContext());
-		tableViewer.setContentProvider(contentProvider);
-		tableViewer.setSorter(new BundleIdSorter());
 		tableViewer.setLabelProvider(new BundleTableLabelProvider());
 		
 		nameFilter = new BundleSymbolicNameFilter();
 		tableViewer.addFilter(nameFilter);
-		txtFilter.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				nameFilter.setFilterString(txtFilter.getText());
-				tableViewer.refresh();
-			}
-		});
 		
+		// Load data
+		contentProvider = new BundlesContentProvider(tableViewer, Activator
+				.getDefault().getBundleContext());
+		tableViewer.setContentProvider(contentProvider);
+		tableViewer.setSorter(new BundleIdSorter());
 		tableViewer.setInput(Activator.getDefault().getBundleContext());
+		
+		// Layout
+		parent.setLayout(new FillLayout());
 
 		contentProvider.start();
 		getViewSite().setSelectionProvider(tableViewer);
@@ -97,6 +79,11 @@ public class BundlesView extends ViewPart {
 		fillMenu();
 
 		initContextMenu();
+	}
+	
+	protected void updatedFilter(String filterString) {
+		nameFilter.setFilterString(filterString);
+		tableViewer.refresh();
 	}
 
 	private void createActions() {
@@ -131,14 +118,6 @@ public class BundlesView extends ViewPart {
 				Bundle.STOPPING, tableViewer));
 	}
 
-	protected void fillToolBar() {
-		IToolBarManager toolBarManager = getViewSite().getActionBars()
-				.getToolBarManager();
-
-		MenuManager filterMenu = new MenuManager();
-		toolBarManager.add(filterMenu);
-	}
-
 	protected void initContextMenu() {
 		final MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
@@ -155,7 +134,7 @@ public class BundlesView extends ViewPart {
 		getSite().registerContextMenu(menuMgr, tableViewer);
 	}
 
-	public void setFocus() {
+	public void doSetFocus() {
 	}
 
 	public void dispose() {

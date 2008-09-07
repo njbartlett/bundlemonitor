@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +41,7 @@ import org.osgi.service.cm.ConfigurationListener;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
-public class ConfigView extends ViewPart implements ServiceTrackerCustomizer, ConfigurationListener {
+public class ConfigView extends FilteredViewPart implements ServiceTrackerCustomizer, ConfigurationListener {
 
 	private static final String NO_CONFIG_ADMIN = "Configuration Admin service unavailable";
 	
@@ -80,20 +81,20 @@ public class ConfigView extends ViewPart implements ServiceTrackerCustomizer, Co
 	};
 
 	
-	public void createPartControl(Composite parent) {
+	public void createMainControl(Composite parent) {
 		context = Activator.getDefault().getBundleContext();
 		listenerRegistration = context.registerService(ConfigurationListener.class.getName(), this, null);
 		
 		tracker = new ServiceTracker(context, ConfigurationAdmin.class.getName(), this);
 		
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+		GridLayout layout = new GridLayout(1, false);
+		layout.horizontalSpacing = 0;
+		layout.verticalSpacing = 0;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		parent.setLayout(layout);
 		
-		new Label(composite, SWT.NONE).setText("Filter:");
-		final Text txtFilter = new Text(composite, SWT.BORDER);
-		txtFilter.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		
-		Tree tree = new Tree(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		Tree tree = new Tree(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		tree.setLinesVisible(true);
 		tree.setHeaderVisible(true);
 		
@@ -104,11 +105,11 @@ public class ConfigView extends ViewPart implements ServiceTrackerCustomizer, Co
 		col = new TreeColumn(tree, SWT.NONE);
 		col.setWidth(200);
 		
-		status = new Label(composite, SWT.NONE);
+		status = new Label(parent, SWT.NONE);
 		status.setText(NO_CONFIG_ADMIN);
 		
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		status.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
+		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		status.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		
 		viewer = new TreeViewer(tree);
 		viewer.setContentProvider(new ConfigsContentProvider(tracker));
@@ -118,12 +119,6 @@ public class ConfigView extends ViewPart implements ServiceTrackerCustomizer, Co
 		pidFilter = new ConfigPidFilter();
 		viewer.addFilter(pidFilter);
 		
-		txtFilter.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				pidFilter.setServiceName(txtFilter.getText());
-				viewer.refresh();
-			}
-		});
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				ConfigWrapper wrapper;
@@ -153,13 +148,15 @@ public class ConfigView extends ViewPart implements ServiceTrackerCustomizer, Co
 		getSite().setSelectionProvider(viewer);
 	}
 	
+	protected void updatedFilter(String filterString) {
+		pidFilter.setServiceName(filterString);
+		viewer.refresh();
+	}
+	
 	public void dispose() {
 		listenerRegistration.unregister();
 		tracker.close();
 		super.dispose();
-	}
-
-	public void setFocus() {
 	}
 
 	public Object addingService(final ServiceReference reference) {

@@ -9,25 +9,19 @@ import name.neilbartlett.eclipse.bundlemonitor.util.ViewerUpdater;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.AllServiceListener;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Filter;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceReference;
 
-public class ServicesView extends ViewPart implements AllServiceListener {
+public class ServicesView extends FilteredViewPart implements AllServiceListener {
 
 	private TreeViewer viewer;
 	
@@ -36,21 +30,13 @@ public class ServicesView extends ViewPart implements AllServiceListener {
 
 	private BundleContext context;
 
-	public void createPartControl(Composite parent) {
-		try {
+	public void createMainControl(Composite parent) {
+			/**** Create controls ****/
 			context = Activator.getDefault().getBundleContext();
-			Filter filter = FrameworkUtil.createFilter("(objectClass=*)");
 			
-			Composite composite = new Composite(parent, SWT.NONE);
-			composite.setLayout(new GridLayout(2, false));
-			
-			new Label(composite, SWT.NONE).setText("Filter:");
-			final Text txtFilter = new Text(composite, SWT.BORDER);
-			txtFilter.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-			
-			Tree tree = new Tree(composite, SWT.BORDER | SWT.FULL_SELECTION);
+			Tree tree = new Tree(parent, SWT.FULL_SELECTION);
 			tree.setLinesVisible(true);
-			tree.setHeaderVisible(true);
+			tree.setHeaderVisible(false);
 			
 			TreeColumn col;
 			col = new TreeColumn(tree, SWT.NONE);
@@ -68,33 +54,40 @@ public class ServicesView extends ViewPart implements AllServiceListener {
 			nameFilter = new ServiceNameFilter();
 			viewer.addFilter(nameFilter);
 			
-			txtFilter.addModifyListener(new ModifyListener() {
-				public void modifyText(ModifyEvent e) {
-					nameFilter.setServiceName(txtFilter.getText());
-					viewer.refresh();
-				}
-			});
-			
-			// Initialize content
+			/**** Load content ****/
 			context.addServiceListener(this);
-			ServiceReference[] refs = context.getAllServiceReferences(null, null);
-			for (int i = 0; i < refs.length; i++) {
-				services.add(refs[i]);
+			ServiceReference[] refs = null;
+			try {
+				refs = context.getAllServiceReferences(null, null);
+			} catch (InvalidSyntaxException e) {
+				// Shouldn't happen
+				throw new RuntimeException("Invalid filter expression", e);
+			}
+			// Result is be null if no services exist... thanks OSGi!
+			if(refs != null) {
+				for (int i = 0; i < refs.length; i++) {
+					services.add(refs[i]);
+				}
 			}
 			viewer.setInput(services);
 			
-		} catch (InvalidSyntaxException e) {
-			// Shouldn't happen
-			new Label(parent, SWT.NONE).setText("Invalid filter");
-		}
+			/**** Layout ****/
+			GridLayout layout = new GridLayout(1,false);
+			layout.horizontalSpacing = 0;
+			layout.verticalSpacing = 0;
+			layout.marginWidth = 0;
+			layout.marginHeight = 0;
+			parent.setLayout(layout);
+	}
+	
+	protected void updatedFilter(String filterString) {
+		nameFilter.setServiceName(filterString);
+		viewer.refresh();
 	}
 	
 	public void dispose() {
 		context.removeServiceListener(this);
 		super.dispose();
-	}
-
-	public void setFocus() {
 	}
 
 	public void serviceChanged(ServiceEvent event) {
