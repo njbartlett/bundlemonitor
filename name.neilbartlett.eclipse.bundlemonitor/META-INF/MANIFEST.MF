@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bundle Monitor Bundle
 Bundle-SymbolicName: name.neilbartlett.eclipse.bundlemonitor;singleton:=true
-Bundle-Version: 0.0.3.qualifier
-Bundle-Activator: name.neilbartlett.eclipse.bundlemonitor.Activator
+Bundle-Version: 0.1.0.qualifier
+Bundle-Activator: name.neilbartlett.eclipse.bundlemonitor.internal.Activator
 Bundle-Vendor: Neil Bartlett
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.commands,
  org.eclipse.core.commands.common,
  org.eclipse.jface.action,

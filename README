@@ -1,0 +1,14 @@
+Build Instructions
+==================
+
+Bundle Monitor is an Eclipse plug-in developed in PDE. To open the projects:
+
+1) Check out the source code using Git:
+
+    git clone git://github.com/njbartlett/bundlemonitor.git
+
+2) In Eclipse select File > Import > Existing Projects into Workspace and click Next.
+
+3) Click Browse, and navigate to the `bundlemonitor` directory created by Git.
+
+4) Ensure all sub-projects are checked and click Finish. Do NOT check the box labelled "Copy projects into workspace".

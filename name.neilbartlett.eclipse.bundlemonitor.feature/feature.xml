@@ -2,7 +2,7 @@
 <feature
       id="name.neilbartlett.eclipse.bundlemonitor.feature"
       label="Bundle Monitor Feature"
-      version="0.0.3.qualifier"
+      version="0.1.0.qualifier"
       provider-name="Neil Bartlett">
 
    <description>
