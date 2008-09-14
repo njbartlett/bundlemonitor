@@ -31,7 +31,4 @@ public class BundleSymbolicNameFilter extends ViewerFilter {
 	public void setFilterString(String filterString) {
 		this.filterString = filterString.toLowerCase();
 	}
-	
-	
-
 }

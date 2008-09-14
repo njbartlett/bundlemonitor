@@ -27,5 +27,4 @@ public class ExcludeBundlesViewerFilter extends ViewerFilter {
 
 		return bundle.getState() != state;
 	}
-
 }

@@ -38,5 +38,4 @@ public class DictionaryContentProvider implements IStructuredContentProvider {
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
-
 }

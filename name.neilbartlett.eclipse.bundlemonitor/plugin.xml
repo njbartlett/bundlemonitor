@@ -56,7 +56,7 @@
                label="Start">
          </action>
          <action
-               class="name.neilbartlett.eclipse.bundlemonitor.views.bundle.actions.AbstractResolveBundlesAction"
+               class="name.neilbartlett.eclipse.bundlemonitor.views.bundle.actions.ResolveBundlesObjectActionDelegate"
                id="name.neilbartlett.eclipse.bundlemonitor.resolveAction"
                label="Resolve">
          </action>
@@ -68,7 +68,7 @@
             id="name.neilbartlett.eclipse.bundlemonitor.viewContribution1"
             targetID="name.neilbartlett.eclipse.bundlemonitor.bundlesView">
          <action
-               class="name.neilbartlett.eclipse.bundlemonitor.views.bundle.actions.ResolveBundlesActionDelegate"
+               class="name.neilbartlett.eclipse.bundlemonitor.views.bundle.actions.ResolveAllBundlesViewActionDelegate"
                icon="icons/bundle_resolve.gif"
                id="name.neilbartlett.eclipse.bundlemonitor.action2"
                label="Resolve All"
