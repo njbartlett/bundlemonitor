@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://neilbartlett.name/downloads/bundlemonitor/">
-      Bundle Monitor
-   </description>
-   <feature url="features/name.neilbartlett.eclipse.bundlemonitor.feature_0.1.0.200809072321.jar" id="name.neilbartlett.eclipse.bundlemonitor.feature" version="0.1.0.200809072321">
-      <category name="bundlemonitor"/>
+   <feature url="features/name.neilbartlett.eclipse.bundlemonitor.feature_0.1.0.200904032227.jar" id="name.neilbartlett.eclipse.bundlemonitor.feature" version="0.1.0.200904032227">
+      <category name="BundleMonitor"/>
    </feature>
-   <category-def name="bundlemonitor" label="Bundle Monitor"/>
+   <feature url="features/name.neilbartlett.eclipse.bundlemonitor.feature_0.1.0.200809141151.jar" id="name.neilbartlett.eclipse.bundlemonitor.feature" version="0.1.0.200809141151">
+      <category name="BundleMonitor"/>
+   </feature>
+   <category-def name="BundleMonitor" label="Bundle Monitor">
+      <description>
+         Tools for managing the OSGi runtime.
+      </description>
+   </category-def>
 </site>

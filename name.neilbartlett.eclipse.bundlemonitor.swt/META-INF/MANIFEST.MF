@@ -12,7 +12,7 @@ Import-Package: org.eclipse.core.runtime,
  org.eclipse.jface.window,
  org.eclipse.swt,
  org.eclipse.swt.widgets;bundle-symbolic-name="org.eclipse.swt",
- org.eclipse.ui,
+ org.eclipse.ui;ui.workbench="split",
  org.eclipse.ui.plugin,
  org.osgi.framework;version="1.4.0"
 Bundle-ActivationPolicy: lazy
